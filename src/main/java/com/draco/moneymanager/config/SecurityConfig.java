@@ -40,32 +40,24 @@ public class SecurityConfig {
 //    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // allow CORS preflight
+                        // CORS preflight
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // public endpoints (SỬA: thêm đúng prefix /api/v1.0)
-                        .requestMatchers(
-                                "/api/v1.0/status",
-                                "/api/v1.0/health",
-                                "/api/v1.0/register",
-                                "/api/v1.0/activate",
-                                "/api/v1.0/login"
-                        ).permitAll()
-
-                        // nếu bạn vẫn có endpoint không prefix /api/v1.0 thì giữ thêm (tuỳ bạn)
-                        .requestMatchers("/status", "/health").permitAll()
+                        // Public endpoints - permit ALL methods cho chắc
+                        .requestMatchers("/**/status", "/**/health").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/**/register", "/**/login").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/**/activate").permitAll()
 
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return httpSecurity.build();
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
 
