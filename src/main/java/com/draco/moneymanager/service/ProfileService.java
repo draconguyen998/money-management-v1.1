@@ -31,7 +31,7 @@ public class ProfileService {
     private final JwtUtil jwtUtil;
 
     @Value("${app.activation.url}")
-    private final String activationURL;
+    private String activationURL;
 
     public ProfileDTO registerProfile(ProfileDTO profileDTO) {
         ProfileEntity newProfile = toEntity(profileDTO);
