@@ -48,7 +48,6 @@ public class EmailController {
                 .body(fileBytes);
     }
 
-    // 2) EMAIL excel (frontend bấm Email)
     @PostMapping("/income-excel")
     public ResponseEntity<?> emailIncomeExcel() throws IOException {
         ProfileEntity profile = profileService.getCurrentProfile();
@@ -70,6 +69,30 @@ public class EmailController {
 
         return ResponseEntity.ok().body(
                 java.util.Map.of("message", "Income details emailed successfully")
+        );
+    }
+
+    @PostMapping("/expense-excel")
+    public ResponseEntity<?> emailExpenseExcel() throws IOException {
+        ProfileEntity profile = profileService.getCurrentProfile();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        excelService.writeIncomesToExcel(
+                baos,
+                expenseService.getCurrentMonthExpensesForCurrentUser()
+        );
+
+        byte[] fileBytes = baos.toByteArray();
+        String filename = "expense_details_" + LocalDate.now() + ".xlsx";
+
+        String to = profile.getEmail(); // hoặc profile.getUser().getEmail() tùy entity bạn
+        String subject = "Your Expense Report";
+        String body = "Hi " + profile.getFullName() + ",\n\nAttached is your income report.\n\nRegards,\nMoney Manager";
+
+        emailService.sendEmailWithAttachment(to, subject, body, fileBytes, filename);
+
+        return ResponseEntity.ok().body(
+                java.util.Map.of("message", "Expense details emailed successfully")
         );
     }
 

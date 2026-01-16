@@ -1,6 +1,7 @@
 package com.draco.moneymanager.service;
 
 import com.draco.moneymanager.dto.ExpenseDTO;
+import com.draco.moneymanager.dto.IncomeDTO;
 import com.draco.moneymanager.entity.CategoryEntity;
 import com.draco.moneymanager.entity.ExpenseEntity;
 import com.draco.moneymanager.entity.ProfileEntity;
@@ -32,7 +33,7 @@ public class ExpenseService {
 
     }
 
-    public List<ExpenseDTO> getCurrentMonthExpensesForCurrentUser() {
+    public List<IncomeDTO> getCurrentMonthExpensesForCurrentUser() {
 
         ProfileEntity profile = profileService.getCurrentProfile();
 
