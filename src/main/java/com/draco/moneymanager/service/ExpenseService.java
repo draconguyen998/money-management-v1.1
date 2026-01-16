@@ -33,7 +33,7 @@ public class ExpenseService {
 
     }
 
-    public List<IncomeDTO> getCurrentMonthExpensesForCurrentUser() {
+    public List<ExpenseDTO> getCurrentMonthExpensesForCurrentUser() {
 
         ProfileEntity profile = profileService.getCurrentProfile();
 

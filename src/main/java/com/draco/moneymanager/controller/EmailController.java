@@ -61,7 +61,7 @@ public class EmailController {
         byte[] fileBytes = baos.toByteArray();
         String filename = "income_details_" + LocalDate.now() + ".xlsx";
 
-        String to = profile.getEmail(); // hoặc profile.getUser().getEmail() tùy entity bạn
+        String to = profile.getEmail();
         String subject = "Your Income Report";
         String body = "Hi " + profile.getFullName() + ",\n\nAttached is your income report.\n\nRegards,\nMoney Manager";
 
@@ -77,7 +77,7 @@ public class EmailController {
         ProfileEntity profile = profileService.getCurrentProfile();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        excelService.writeIncomesToExcel(
+        excelService.writeExpensesToExcel(
                 baos,
                 expenseService.getCurrentMonthExpensesForCurrentUser()
         );
